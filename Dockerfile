@@ -10,4 +10,4 @@ WORKDIR /app
 
 COPY --from=build /app/target/Moodlify-0.0.1-SNAPSHOT.jar app.jar
 
-CMD ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar","--server.address=0.0.0.0"]
