@@ -1,0 +1,68 @@
+package com.example.Moodlify;
+
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
+
+
+@Controller
+public class Controllers {
+    @RequestMapping("/logins")
+    public String metho()
+    {
+        return "redirect:index.html";
+    }
+    @RequestMapping("/home")
+    public String methow()
+    {
+        return "redirect:home.html";
+    }
+
+
+
+//    @RequestMapping ("/callback")
+//    public void meth(@RequestParam("code") String code)
+//    {
+//        RestTemplate rp=new RestTemplate();
+//        HttpHeaders hd=new HttpHeaders();
+//        String clientId="8a8eb08b5ef94b9e956fdd5c761dfe31";
+//        String clientSecret="2cddb1496262478eae2fd1e5ac86d4be";
+//       hd.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+//        hd.setBasicAuth(clientId, clientSecret); // Very important
+//        MultiValueMap<String, String> form = new LinkedMultiValueMap<>();
+//        form.add("grant_type", "authorization_code");
+//        form.add("code", code); // From /callback?code=...
+//        String redirectUri="https://localhost:8080/callback";
+//        form.add("redirect_uri", redirectUri);
+//
+//
+//        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(form, hd);
+//        String tokenEndpoint="https://accounts.spotify.com/api/token";
+//        ResponseEntity<String> response = rp.postForEntity(tokenEndpoint, request, String.class);
+//        System.out.println("heelllooo jiiii inside callback");
+//        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+//        Authentication authentication = new UsernamePasswordAuthenticationToken("spotifyUserId_or_email", null, authorities);
+//
+//        // Step 4: Set authentication in security context
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//
+//
+//    }
+
+}
