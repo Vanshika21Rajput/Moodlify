@@ -1,5 +1,7 @@
 package com.example.Moodlify;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.http.HttpHeaders;
@@ -22,14 +25,17 @@ import java.util.List;
 
 @Controller
 public class Controllers {
+    @Autowired
+    service ser;
     @RequestMapping("/logins")
     public String metho()
     {
         return "redirect:index.html";
     }
     @RequestMapping("/home")
-    public String methow()
-    {
+    public String methow() throws JsonProcessingException {
+        System.out.println("hiiii");
+        ser.getsongs("happy");
         return "redirect:home.html";
     }
 
@@ -60,6 +66,16 @@ public class Controllers {
 //
 //        // Step 4: Set authentication in security context
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//
+//
+//    }
+
+//    @RequestMapping("/fetch-songs")
+//    public ResponseEntity<List<Song>> meth(@RequestParam String m)
+//    {
+//        List<Song>l=ser.getsongsonmood(mood);
+//
 //
 //
 //
