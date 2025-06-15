@@ -53,7 +53,7 @@ public class service {
         System.out.println("Matched: default (mood was: " + m + ")");
         switch (m) {
             case "happy" -> {
-                mp.add("q","artist:Shreya Ghoshal");
+                mp.add("q","artist:Atif Aslam");
                 mp.add("type","track");
                 mp.add("limit","3");
 
@@ -62,21 +62,27 @@ public class service {
             {
                 mp.add("q","artist:Dua Lipa");
                 mp.add("type","track");
-                mp.add("limit","3");
+                mp.add("limit","5");
 
 
             }
-            case "Romantic"->
+            case "romantic"->
             {
                 mp.add("q","artist:Taylor Swift");
                 mp.add("type","track");
-                mp.add("limit","3");
+                mp.add("limit","5");
+            }
+            case "relaxed"->
+            {
+                mp.add("q","artist:KK");
+                mp.add("type","track");
+                mp.add("limit","5");
             }
             default -> {
                 System.out.println("Matched: default (mood was: " + mood + ")");
                 mp.add("q", "artist:Arijit Singh");
                 mp.add("type", "track");
-                mp.add("limit", "3");
+                mp.add("limit", "5");
 
             }
             }

@@ -44,7 +44,7 @@ public class Controllers {
         return "redirect:home.html";
     }
 
-@CrossOrigin("https://ec7b-2409-40c4-2f-ef60-a8bf-441c-a48c-2860.ngrok-free.app")
+@CrossOrigin("https://moodlify.onrender.com")
 @ResponseBody
    @GetMapping("/fetch-songs/{mood}")
     public List<String> star(@PathVariable("mood") String m) throws JsonProcessingException {

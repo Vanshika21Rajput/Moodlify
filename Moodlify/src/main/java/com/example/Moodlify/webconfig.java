@@ -10,7 +10,7 @@ public class webconfig implements WebMvcConfigurer {
 
     public void addCorsMappings(CorsRegistry reg)
     {
-        reg.addMapping("/**")
+        reg.addMapping("https://moodlify.onrender.com")
                 .allowedOrigins("*")
                 .allowedMethods("*");
     }
