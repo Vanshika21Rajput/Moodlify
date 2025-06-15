@@ -52,12 +52,7 @@ public class service {
         String m=mood.toLowerCase();
         System.out.println("Matched: default (mood was: " + m + ")");
         switch (m) {
-            case "happy" -> {
-                mp.add("q","artist:Atif Aslam");
-                mp.add("type","track");
-                mp.add("limit","3");
 
-            }
             case "energetic"->
             {
                 mp.add("q","artist:Dua Lipa");
@@ -75,6 +70,12 @@ public class service {
             case "relaxed"->
             {
                 mp.add("q","artist:KK");
+                mp.add("type","track");
+                mp.add("limit","5");
+            }
+            case "angry"->
+            {
+                mp.add("q","artist:Rahat Fateh Ali Khan");
                 mp.add("type","track");
                 mp.add("limit","5");
             }
