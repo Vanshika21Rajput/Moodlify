@@ -12,7 +12,7 @@ public class Configuration {
     public SecurityFilterChain method(HttpSecurity hs) throws Exception {
      return   (SecurityFilterChain)hs.csrf(o->o.disable())
              .oauth2Login(o->o.loginPage("/logins").defaultSuccessUrl("/home",true))
-                .authorizeHttpRequests(o->o.requestMatchers("/logins","/register","/index.html","/home.html","/callback","/oauth2/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(o->o.requestMatchers("/logins","/register","/index.html","/home.html","/oauth2/**").permitAll().anyRequest().authenticated())
         .build();
     }
 }

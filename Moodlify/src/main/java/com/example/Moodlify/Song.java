@@ -1,31 +1,37 @@
 package com.example.Moodlify;
 
 public class Song {
-    String Sname;
-    String SArtist;
-    String Surl;
+    String id;
+    String name;
+    String uri;
 
-    public String getSname() {
-        return Sname;
+    public Song(String id, String name, String uri) {
+        this.id=id;
+        this.name=name;
+        this.uri=uri;
     }
 
-    public void setSname(String sname) {
-        Sname = sname;
+    public String getUri() {
+        return uri;
     }
 
-    public String getSArtist() {
-        return SArtist;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
-    public void setSArtist(String SArtist) {
-        this.SArtist = SArtist;
+    public String getName() {
+        return name;
     }
 
-    public String getSurl() {
-        return Surl;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setSurl(String surl) {
-        Surl = surl;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

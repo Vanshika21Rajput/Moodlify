@@ -10,13 +10,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,16 +26,33 @@ import java.util.List;
 public class Controllers {
     @Autowired
     service ser;
+    @Autowired
+    OAuth2AuthorizedClientService fg;
     @RequestMapping("/logins")
-    public String metho()
-    {
+    public String metho() throws JsonProcessingException {
+
         return "redirect:index.html";
     }
     @RequestMapping("/home")
     public String methow() throws JsonProcessingException {
-        System.out.println("hiiii");
-        ser.getsongs("happy");
+
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        System.out.print("username"+authentication.getName());
+        OAuth2AuthorizedClient auth= fg.loadAuthorizedClient("spotify",authentication.getName());
+        System.out.print("username"+auth);
+     //   ser.getsongs("happy");
         return "redirect:home.html";
+    }
+
+@CrossOrigin("https://ec7b-2409-40c4-2f-ef60-a8bf-441c-a48c-2860.ngrok-free.app")
+@ResponseBody
+   @GetMapping("/fetch-songs/{mood}")
+    public List<String> star(@PathVariable("mood") String m) throws JsonProcessingException {
+        System.out.println("hiiii"+m);
+
+         List<String>l=ser.getsongs(m);
+        System.out.println("l"+l);
+        return l;
     }
 
 

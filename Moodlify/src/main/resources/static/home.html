@@ -264,6 +264,24 @@
         color: #B3B3B3;
         font-size: 0.9rem;
         line-height: 1.4;
+        margin-bottom: 1rem;
+    }
+
+    .play-btn {
+        background: linear-gradient(135deg, #1DB954, #1ed760);
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+    }
+
+    .play-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(29, 185, 84, 0.3);
     }
 
     .mood-indicator {
@@ -323,8 +341,8 @@
     🎵 Moodlify
   </div>
   <div class="user-info">
-    <span>Welcome back, Alex!</span>
-    <div class="user-avatar">A</div>
+    <span>Welcome back !</span>
+    <div class="user-avatar">Welcome</div>
   </div>
 </header>
 
@@ -349,7 +367,8 @@
         </select>
         <div class="dropdown-arrow">▼</div>
       </div>
-      <button id="findMusicBtn" class="find-music-btn" onclick="findMusic()" disabled>
+
+      <button id="findMusicBtn" class="find-music-btn" onclick="handleMoodSelection()">
         🎵 Find My Music
       </button>
     </div>
@@ -360,9 +379,9 @@
   </div>
 
   <section id="recommendations" class="recommendations">
-    <h3>🎶 Perfect Playlists for Your Mood</h3>
+    <h3>🎶 Perfect Songs for Your Mood</h3>
     <div id="playlistGrid" class="playlist-grid">
-      <!-- Playlists will be dynamically inserted here -->
+      <!-- Songs will be dynamically inserted here -->
     </div>
   </section>
 </main>
@@ -380,85 +399,80 @@
       findMusicBtn.disabled = !this.value;
   });
 
-  // Mood-based playlist recommendations
-  const moodPlaylists = {
-      happy: [
-          { emoji: '🌞', title: 'Sunshine Vibes', description: 'Uplifting pop hits that brighten your day' },
-          { emoji: '🎉', title: 'Feel Good Favorites', description: 'Classic feel-good anthems to keep you smiling' },
-          { emoji: '🌈', title: 'Happy Pop Mix', description: 'Contemporary pop tracks full of positive energy' }
-      ],
-      sad: [
-          { emoji: '🌧️', title: 'Melancholy Moments', description: 'Beautiful sad songs for emotional release' },
-          { emoji: '💧', title: 'Tearjerker Ballads', description: 'Heart-wrenching ballads that understand your pain' },
-          { emoji: '🖤', title: 'Emotional Journey', description: 'Deep, moving tracks for introspective moments' }
-      ],
-      energetic: [
-          { emoji: '⚡', title: 'High Energy Hits', description: 'Pump-up tracks to fuel your energy' },
-          { emoji: '🔥', title: 'Workout Warriors', description: 'Intense beats perfect for exercise and motivation' },
-          { emoji: '💪', title: 'Power Playlist', description: 'Driving rhythms that push you forward' }
-      ],
-      relaxed: [
-          { emoji: '🍃', title: 'Chill Waves', description: 'Laid-back tunes for ultimate relaxation' },
-          { emoji: '☕', title: 'Coffee Shop Acoustics', description: 'Mellow acoustic songs for peaceful moments' },
-          { emoji: '🌊', title: 'Zen Zone', description: 'Calming melodies to soothe your soul' }
-      ],
-      romantic: [
-          { emoji: '💕', title: 'Love Songs Collection', description: 'Romantic ballads for special moments' },
-          { emoji: '🌹', title: 'Soulmate Serenades', description: 'Perfect tracks for date nights and romance' },
-          { emoji: '💖', title: 'Heartfelt Harmonies', description: 'Emotional love songs that touch the heart' }
-      ],
-      angry: [
-          { emoji: '🔥', title: 'Rage Release', description: 'Intense rock and metal for venting frustration' },
-          { emoji: '⚡', title: 'Aggressive Anthems', description: 'Hard-hitting tracks to channel your anger' },
-          { emoji: '💥', title: 'Fury Fuel', description: 'Powerful songs for when you need to let it out' }
-      ]
+  const moodEmojis = {
+      happy: '😊',
+      sad: '😢',
+      energetic: '⚡',
+      relaxed: '😌',
+      romantic: '💕',
+      angry: '😤'
   };
 
-  function findMusic() {
+  function handleMoodSelection() {
       const selectedMood = moodSelect.value;
-      const moodEmojis = {
-          happy: '😊',
-          sad: '😢',
-          energetic: '⚡',
-          relaxed: '😌',
-          romantic: '💕',
-          angry: '😤'
-      };
+
+      if (!selectedMood) {
+          alert('Please select a mood first!');
+          return;
+      }
 
       // Show mood indicator
-      moodText.innerHTML = `${moodEmojis[selectedMood]} Great choice! Here are some perfect playlists for your ${selectedMood} mood.`;
+      moodText.innerHTML = `${moodEmojis[selectedMood]} Finding ${selectedMood} songs for you...`;
       moodIndicator.classList.add('show');
 
-      // Generate playlist cards
-      const playlists = moodPlaylists[selectedMood];
+      // Fetch songs from API
+      fetch(`https://ec7b-2409-40c4-2f-ef60-a8bf-441c-a48c-2860.ngrok-free.app/fetch-songs/${selectedMood}`)
+          .then(response => response.json())
+          .then(songs => {
+              console.log("API response:", songs);
+
+              moodText.innerHTML = `${moodEmojis[selectedMood]} Found ${songs.length} ${selectedMood} songs!`;
+              displaySongs(songs);
+              recommendations.classList.add('show');
+          })
+          .catch(error => {
+              console.error("Error fetching songs:", error);
+              moodText.innerHTML = `${moodEmojis[selectedMood]} Error loading songs. Please try again.`;
+              playlistGrid.innerHTML = '<div style="text-align: center; color: #B3B3B3;">❌ Failed to load songs</div>';
+              recommendations.classList.add('show');
+          });
+  }
+
+  function displaySongs(songs) {
       playlistGrid.innerHTML = '';
 
-      playlists.forEach((playlist, index) => {
+      console.log("displaySongs called with:", songs); // Debug log
+
+      songs.forEach((song, index) => {
+          console.log(`Song ${index}:`, song.name);
+           // Debug each song
+
+
           const card = document.createElement('div');
           card.className = 'playlist-card';
-          card.style.animationDelay = `${index * 0.1}s`;
-          card.onclick = () => playPlaylist(playlist.title);
+  let s=JSON.parse(song)
+          // Handle your API response structure
+          const songName = s.name || 'A perfect Match for you !';
+          const songUri = s.uri|| '#';
+          const songId =    s.id || '';
 
           card.innerHTML = `
-              <span class="playlist-emoji">${playlist.emoji}</span>
-              <h4 class="playlist-title">${playlist.title}</h4>
-              <p class="playlist-description">${playlist.description}</p>
+              <span class="playlist-emoji">🎵</span>
+              <h4 class="playlist-title">${songName}</h4>
+              <p class="playlist-description">Track ID: ${songId}</p>
+              <button class="play-btn" onclick="playSong('${songUri}')">▶️ Listen on Spotify</button>
           `;
 
           playlistGrid.appendChild(card);
       });
-
-      // Show recommendations section
-      recommendations.classList.add('show');
-
-      // Scroll to recommendations
-      setTimeout(() => {
-          recommendations.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
   }
 
-  function playPlaylist(playlistName) {
-      alert(`🎵 Opening "${playlistName}" on Spotify!\n\nIn a real app, this would launch the playlist in Spotify or your music player.`);
+  function playSong(url) {
+      if (url && url !== 'undefined') {
+          window.open(url, '_blank');
+      } else {
+          alert('No Spotify link available for this song');
+      }
   }
 </script>
 </body>
